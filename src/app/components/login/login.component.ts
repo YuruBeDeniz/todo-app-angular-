@@ -3,30 +3,30 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { UserService } from '../../../services/user.service';
 
 @Component({
-  selector: 'app-signup',
+  selector: 'app-login',
   standalone: true,
   imports: [ReactiveFormsModule],
-  templateUrl: './signup.component.html',
-  styleUrl: './signup.component.css'
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.css'
 })
-export class SignupComponent {
-  signupForm: FormGroup;
+export class LoginComponent {
+  loginForm: FormGroup;
 
   constructor(private formBuilder: FormBuilder, private userService: UserService) {
-    this.signupForm = this.formBuilder.group({
+    this.loginForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
-      email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
   onSubmit(): void {
-    if (this.signupForm.valid) {
-      const user = this.signupForm.value;
+    if (this.loginForm.valid) {
+      const user = this.loginForm.value;
 
-      this.userService.signup(user).subscribe({
+      this.userService.login(user).subscribe({
         next: (response) => {
-          console.log('User created:', response);
+          console.log('User logged in:', response);
+          // localStorage.setItem('authToken', response.token);
         },
         error: (error) => {
           console.error('Error creating user:', error);
@@ -36,5 +36,4 @@ export class SignupComponent {
       console.log('Form is invalid');
     }
   }
-
 }

@@ -11,6 +11,7 @@ import { TodoListEffects } from './components/todo-list/todo-list.effects';
 import { provideState, provideStore } from '@ngrx/store';
 import { todoListReducer } from './components/todo-list/todo-list-reducer';
 import { SignupComponent } from './components/signup/signup.component';
+import { LoginComponent } from './components/login/login.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent }, 
@@ -25,6 +26,7 @@ export const routes: Routes = [
     { path: 'tasks/task-details/:taskId', component: TaskDetailComponent }, 
     { path: 'counter', component: CounterComponent }, 
     { path: 'calculator', component: CalculatorComponent }, 
-    { path: 'signup', component: SignupComponent }, 
+    { path: 'signup', component: LoginComponent }, 
+    { path: 'login', component: SignupComponent }, 
     { path: '**', component: PageNotFoundComponent }
 ];

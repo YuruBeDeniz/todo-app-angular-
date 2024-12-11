@@ -21,4 +21,17 @@ export class UserService {
             });
         });
       }
+
+      login(user: User): Observable<User> {
+        return new Observable<User>((observer) => {
+            this.http.post<User>(`${this.apiUrl}/login/`, user).subscribe({
+              next: (response) => {
+                console.log(response)
+                return observer.next(response)
+            },
+              error: (error) => observer.error(error),
+              complete: () => observer.complete()
+            });
+        });
+      }  
 }
