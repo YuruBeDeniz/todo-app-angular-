@@ -20,7 +20,6 @@ export class TaskListComponent {
   taskForm!: FormGroup;
   errorMessage: string = '';
   isFetching = signal<boolean>(false);
-  token: string = localStorage.getItem('authToken') || '';
 
   constructor(private taskService: TaskService, private formBuilder: FormBuilder) {
   }
@@ -41,7 +40,7 @@ export class TaskListComponent {
     
 
     // Add task to database and update the signal
-    this.taskService.addTask(newTask, this.token)
+    this.taskService.addTask(newTask)
       .pipe(catchError((error) => { 
         console.error(error);
         return throwError(() => new Error("Error adding task."))}
