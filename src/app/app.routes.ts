@@ -6,27 +6,17 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { TaskDetailComponent } from './components/task-detail/task-detail.component';
 import { CounterComponent } from './components/counter/counter.component';
 import { CalculatorComponent } from './components/calculator/calculator.component';
-import { provideEffects } from '@ngrx/effects';
-import { TodoListEffects } from './components/todo-list/todo-list.effects';
-import { provideState, provideStore } from '@ngrx/store';
-import { todoListReducer } from './components/todo-list/todo-list-reducer';
 import { SignupComponent } from './components/signup/signup.component';
 import { LoginComponent } from './components/login/login.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent }, 
-    { path: 'todos', 
-      component: TodoListComponent,     
-/*       providers: [
-        provideEffects(TodoListEffects),
-        provideState('todos', todoListReducer) 
-      ] */
-    }, 
+    { path: 'todos', component: TodoListComponent }, 
     { path: 'tasks', component: TaskListComponent },
     { path: 'tasks/task-details/:taskId', component: TaskDetailComponent }, 
     { path: 'counter', component: CounterComponent }, 
     { path: 'calculator', component: CalculatorComponent }, 
-    { path: 'signup', component: LoginComponent }, 
-    { path: 'login', component: SignupComponent }, 
+    { path: 'signup', component: SignupComponent }, 
+    { path: 'login', component:  LoginComponent}, 
     { path: '**', component: PageNotFoundComponent }
 ];

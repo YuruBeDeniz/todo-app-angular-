@@ -25,7 +25,7 @@ export class LoginComponent {
 
       this.userService.login(user).subscribe({
         next: (response) => {
-          console.log('User logged in:', response);
+          console.log('Token:', response);
           // localStorage.setItem('authToken', response.token);
         },
         error: (error) => {
