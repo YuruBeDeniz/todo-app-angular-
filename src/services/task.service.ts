@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable, NgZone, inject } from "@angular/core";
 import { Observable } from "rxjs";
 import type { Task } from "../app/models/task.model";
@@ -10,15 +10,14 @@ export class TaskService {
 
   constructor(private http: HttpClient) {}
 
-  addTask(task: Task): Observable<Task> {
-    return new Observable<Task>((observer) => {
-        this.http.post<Task>(`${this.apiUrl}/create/`, task).subscribe({
-          next: (response) => observer.next(response),
-          error: (error) => observer.error(error),
-          complete: () => observer.complete()
-        });
-    });
-  }
+addTask(task: Task, token: string): Observable<Task> {
+  const headers = new HttpHeaders({
+    Authorization: `Token ${token}`,
+  });
+
+  return this.http.post<Task>(`${this.apiUrl}/create/`, task, { headers });
+}
+
 
   getTasks(): Observable<Task[]> {
     return new Observable<Task[]>((observer) => {

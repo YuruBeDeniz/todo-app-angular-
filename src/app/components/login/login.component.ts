@@ -2,6 +2,10 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../../../services/user.service';
 
+export interface LoginResponse {
+  token: string;
+}
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -26,7 +30,7 @@ export class LoginComponent {
       this.userService.login(user).subscribe({
         next: (response) => {
           console.log('Token:', response);
-          // localStorage.setItem('authToken', response.token);
+          localStorage.setItem('authToken', response.token);
         },
         error: (error) => {
           console.error('Error creating user:', error);

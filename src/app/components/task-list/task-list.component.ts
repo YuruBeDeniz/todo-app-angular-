@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { TaskService } from '../../../services/task.service';
 import { TaskComponent } from '../task/task.component';
 import { FormGroup, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -20,28 +20,28 @@ export class TaskListComponent {
   taskForm!: FormGroup;
   errorMessage: string = '';
   isFetching = signal<boolean>(false);
+  token: string = localStorage.getItem('authToken') || '';
 
   constructor(private taskService: TaskService, private formBuilder: FormBuilder) {
   }
 
-  ngOnInit(): void {
-    //initilize form group inside ngOnInit so that:
-    //the form is set up only after all necessary components and services are available.
+  ngOnInit(): void {  
     this.taskForm = this.formBuilder.group({
-      title: ['', Validators.required]
+      title: ['', Validators.required],
     });
-
+  
     this.getTasks();
   }
 
-  addTask(): void {
+    addTask(): void {
     const newTask: Task = {
       title: this.taskForm.value.title,
       completed: false
     };
     
+
     // Add task to database and update the signal
-    this.taskService.addTask(newTask)
+    this.taskService.addTask(newTask, this.token)
       .pipe(catchError((error) => { 
         console.error(error);
         return throwError(() => new Error("Error adding task."))}

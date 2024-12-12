@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import type { User } from "../app/models/user.model";
+import { LoginResponse } from "../app/components/login/login.component";
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -22,16 +23,7 @@ export class UserService {
         });
       }
 
-      login(user: User): Observable<User> {
-        return new Observable<User>((observer) => {
-            this.http.post<User>(`${this.apiUrl}/login/`, user).subscribe({
-              next: (response) => {
-                console.log(response)
-                return observer.next(response)
-            },
-              error: (error) => observer.error(error),
-              complete: () => observer.complete()
-            });
-        });
-      }  
+    login(user: User): Observable<LoginResponse> {
+      return this.http.post<LoginResponse>(`${this.apiUrl}/login/`, user);
+    }
 }
