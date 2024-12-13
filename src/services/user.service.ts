@@ -2,7 +2,8 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import type { User } from "../app/models/user.model";
-import { LoginResponse } from "../app/components/login/login.component";
+import { Token } from "../app/components/login/login.component";
+import { TokenInterceptor } from "../app/token.interceptors";
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -23,7 +24,10 @@ export class UserService {
         });
       }
 
-    login(user: User): Observable<LoginResponse> {
-      return this.http.post<LoginResponse>(`${this.apiUrl}/login/`, user);
+    login(user: User): Observable<Token> {
+      return this.http.post<Token>(`${this.apiUrl}/login/`, user);
+    }
+    logout(): Observable<any> {
+      return this.http.post(`${this.apiUrl}/logout/`, {}); 
     }
 }

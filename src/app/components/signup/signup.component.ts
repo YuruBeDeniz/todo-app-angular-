@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../../../services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -12,7 +13,7 @@ import { UserService } from '../../../services/user.service';
 export class SignupComponent {
   signupForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private userService: UserService) {
+  constructor(private formBuilder: FormBuilder, private userService: UserService, private router: Router) {
     this.signupForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
@@ -27,6 +28,7 @@ export class SignupComponent {
       this.userService.signup(user).subscribe({
         next: (response) => {
           console.log('User created:', response);
+          this.router.navigate(['/login']);
         },
         error: (error) => {
           console.error('Error creating user:', error);
