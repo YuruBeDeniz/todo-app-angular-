@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../../../services/user.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
 
 export interface Token {
   token: string;
@@ -17,7 +18,12 @@ export interface Token {
 export class LoginComponent {
   loginForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private userService: UserService, private router: Router) {
+  constructor(
+    private formBuilder: FormBuilder, 
+    private userService: UserService, 
+    private authService: AuthService, 
+    private router: Router
+  ) {
     this.loginForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
       password: ['', [Validators.required, Validators.minLength(6)]]
@@ -27,19 +33,21 @@ export class LoginComponent {
   onSubmit(): void {
     if (this.loginForm.valid) {
       const user = this.loginForm.value;
-
+  
       this.userService.login(user).subscribe({
         next: (response) => {
           console.log('Token:', response);
-          localStorage.setItem('authToken', response.token);
+          this.authService.storeToken(response.token);
+          this.authService.verifyStoredToken().subscribe();
           this.router.navigate(['/tasks']);
         },
         error: (error) => {
-          console.error('Error creating user:', error);
+          console.error('Error logging in:', error);
         }
-      })
+      });
     } else {
       console.log('Form is invalid');
     }
   }
+  
 }

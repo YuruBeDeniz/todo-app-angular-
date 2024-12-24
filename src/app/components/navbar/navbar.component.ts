@@ -1,30 +1,28 @@
 import { Component } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { UserService } from '../../../services/user.service';
+import { AuthService } from '../../../services/auth.service';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, CommonModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
+  isLoggedIn = false;
+
   
-  constructor(private userService: UserService, private router: Router){}
+  constructor(private authService: AuthService, private router: Router){
+    this.authService.isLoggedIn$.subscribe((loggedIn) => {
+      this.isLoggedIn = loggedIn;
+    });
+  }
   
 
   onLogout(): void {
-    this.userService.logout().subscribe({
-      next: (response) => {
-        console.log('Logged out successfully:', response);
-        localStorage.removeItem('authToken'); 
-        this.router.navigate(['/login']);
-      },
-      error: (error) => {
-        console.error('Error during logout:', error);
-      }
-    });
+    this.authService.logoutUser();
   }
 }
